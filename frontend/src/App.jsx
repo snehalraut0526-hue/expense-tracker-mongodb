@@ -27,7 +27,26 @@ function App() {
     };
 
     useEffect(() => {
-        fetchExpenses();
+        let active = true;
+
+        axios.get(API_URL)
+            .then((response) => {
+                if (active) {
+                    setExpenses(response.data);
+                }
+            })
+            .catch((error) => {
+                console.error("Error fetching expenses:", error);
+            })
+            .finally(() => {
+                if (active) {
+                    setLoading(false);
+                }
+            });
+
+        return () => {
+            active = false;
+        };
     }, []);
 
     const handleChange = (event) => {

@@ -3,6 +3,10 @@ const dns = require("dns");
 
 const connectDB = async () => {
     try {
+        if (!process.env.MONGODB_URI) {
+            throw new Error("MONGODB_URI is not defined in backend/.env");
+        }
+
         if (process.env.MONGODB_DNS_SERVER) {
             dns.setServers([process.env.MONGODB_DNS_SERVER]);
         }
